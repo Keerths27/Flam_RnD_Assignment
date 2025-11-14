@@ -1,5 +1,7 @@
 # Flam RnD Assignment – Android + JNI + OpenGL + Web (Skeleton)
 
+📌 GitHub Repository: https://github.com/Keerths27/Flam_RnD_Assignment
+
 This repository is a **clean, minimal skeleton** for the Flam Software Engineering Intern (R&D) assignment.
 
 It shows the end-to-end flow expected in the problem statement:
