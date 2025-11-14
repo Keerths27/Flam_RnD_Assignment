@@ -8,8 +8,12 @@ Java_com_example_flamrnd_MainActivity_processFrame(
         jobject /* this */,
         jbyteArray frame,
         jint width,
-        jint height) {
+        jint height) {   
 
+      // NOTE: Right now this native method just sends the same bytes back.
+     // Once I link OpenCV for Android, I plan to replace this with Canny
+    // edge detection or some other image processing step.
+   
     // Minimal stub: just echoes the input bytes back.
     // In a full solution, you would:
     // - Convert NV21/YUV to grayscale or RGBA cv::Mat
