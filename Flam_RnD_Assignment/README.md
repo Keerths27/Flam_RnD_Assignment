@@ -55,3 +55,15 @@ Then open the shown `http://localhost:...` URL. You will see:
 - Capture camera frames in `MainActivity` and send them to `processFrame(...)`.
 - Bind the processed frame as a texture in `EdgeRenderer` instead of drawing an empty quad.
 - Export one sample processed frame as PNG/JPEG and show it in the web viewer in place of the placeholder.
+
+## What I Would Do With More Time
+
+This assignment helped me understand the end-to-end pipeline clearly.  
+With more time, I would extend the project in the following ways:
+
+- Implement full OpenCV integration on Android (Canny, Sobel, ORB features).
+- Capture live camera frames and stream them through JNI for real-time processing.
+- Replace the fullscreen quad with a proper texture-binding pipeline.
+- Add WebSocket communication so the web viewer updates automatically.
+- Improve the UI/UX for both Android and Web for smoother visualization.
+- Optimize the native C++ code and move heavy operations off the UI thread.
