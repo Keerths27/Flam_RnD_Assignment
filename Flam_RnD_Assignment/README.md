@@ -19,20 +19,19 @@ The OpenGL ES 2.0 renderer is kept minimal for now. It draws a fullscreen quad a
 
 For the web part, I created a small TypeScript viewer to show placeholder stats and demonstrate how a processed frame preview would be displayed. I kept it simple so the focus remains on the native + Android pipeline.
 
-
 ## Structure
 
-- `app/` – Android app module
-- `jni/` – Native C++ code + CMakeLists.txt
-- `gl/` – OpenGL ES 2.0 renderer (`EdgeRenderer.kt`)
+- `app/` – Android app module  
+- `jni/` – Native C++ code + CMakeLists.txt  
+- `gl/` – OpenGL ES 2.0 renderer (`EdgeRenderer.kt`)  
 - `web/` – TypeScript web viewer (`index.ts` + `index.html`)
 
 ## Android – How to open
 
-1. Open the root folder in **Android Studio**.
-2. Let Gradle sync.
-3. Make sure the NDK and CMake are installed (Android Studio will usually prompt).
-4. You may need to point `OpenCV_DIR` in `jni/CMakeLists.txt` if you add real OpenCV processing.
+1. Open the root folder in **Android Studio**.  
+2. Let Gradle sync.  
+3. Make sure the NDK and CMake are installed (Android Studio will usually prompt).  
+4. You may need to point `OpenCV_DIR` in `jni/CMakeLists.txt` if you add real OpenCV processing.  
 5. Build and run on a physical device or emulator.
 
 ## Web Viewer
@@ -46,8 +45,8 @@ npm run start
 
 Then open the shown `http://localhost:...` URL. You will see:
 
-- A placeholder box for the processed frame
-- Stats like resolution, FPS, and processing text at the bottom
+- A placeholder box for the processed frame  
+- Stats like resolution, FPS, and processing text at the bottom  
 
 ## Architecture Overview
 
@@ -57,79 +56,76 @@ Then open the shown `http://localhost:...` URL. You will see:
 - Prepared to capture camera frames and send them to JNI for processing.
 
 ### JNI Layer (C++)
-- Kotlin calls the native function processFrame(...) in flam_native.cpp.
+- Kotlin calls the native function `processFrame(...)` in `flam_native.cpp`.
 - JNI converts the byte array from Java/Kotlin into raw C++ memory.
 - Current native stub echoes the frame back (placeholder).
 - Can easily be extended with OpenCV (Canny/Sobel/ORB).
 
 ### OpenGL ES Renderer
-- EdgeRenderer.kt draws a fullscreen quad using OpenGL ES 2.0.
+- `EdgeRenderer.kt` draws a fullscreen quad using OpenGL ES 2.0.
 - Renderer is ready for binding a texture once the native processed frame is available.
 - This forms the rendering pipeline for visualizing processed images.
 
 ### Web Viewer (TypeScript)
 - Serves a simple UI to preview processed frames.
-- Displays a sample file (processed_frame.png) from the public directory.
+- Displays a sample file (`processed_frame.png`) from the public directory.
 - Shows placeholder stats (resolution, FPS, processing info).
 - Can be extended with WebSockets to display live processed frames.
 
-
 ## How to extend (for bonus points)
 
-- Replace the stub in `jni/flam_native.cpp` with real OpenCV code (Canny edges).
-- Capture camera frames in `MainActivity` and send them to `processFrame(...)`.
-- Bind the processed frame as a texture in `EdgeRenderer` instead of drawing an empty quad.
-- Export one sample processed frame as PNG/JPEG and show it in the web viewer in place of the placeholder.
+- Replace the stub in `jni/flam_native.cpp` with real OpenCV code (Canny edges).  
+- Capture camera frames in `MainActivity` and send them to `processFrame(...)`.  
+- Bind the processed frame as a texture in `EdgeRenderer` instead of drawing an empty quad.  
+- Export one sample processed frame as PNG/JPEG and show it in the web viewer.
 
 ## What I Would Do With More Time
 
-This assignment helped me understand the end-to-end pipeline clearly.  
-With more time, I would extend the project in the following ways:
-
-- Implement full OpenCV integration on Android (Canny, Sobel, ORB features).
-- Capture live camera frames and stream them through JNI for real-time processing.
-- Replace the fullscreen quad with a proper texture-binding pipeline.
-- Add WebSocket communication so the web viewer updates automatically.
-- Improve the UI/UX for both Android and Web for smoother visualization.
-- Optimize the native C++ code and move heavy operations off the UI thread.
+- Implement full OpenCV integration on Android (Canny, Sobel, ORB features).  
+- Capture live camera frames and stream them through JNI for real-time processing.  
+- Replace the fullscreen quad with a proper texture-binding pipeline.  
+- Add WebSocket communication so the web viewer updates automatically.  
+- Improve UI/UX for both Android and Web.  
+- Optimize native C++ code for better performance.
 
 ## Setup Instructions
 
 ### Android (NDK + CMake)
 
-1. Open Android Studio.
-2. Go to **File → Settings → Appearance & Behavior → System Settings → Android SDK**.
-3. Open the **SDK Tools** tab.
-4. Install the following:
-   - **NDK (Side by Side)**
-   - **CMake**
-   - **LLDB** (optional but recommended)
-5. Click Apply → OK.
-6. Let Gradle sync and rebuild the project.
+1. Open Android Studio.  
+2. Go to **File → Settings → Appearance & Behavior → System Settings → Android SDK**.  
+3. Open the **SDK Tools** tab.  
+4. Install:  
+   - **NDK (Side by Side)**  
+   - **CMake**  
+   - **LLDB** (optional)  
+5. Click Apply → OK.  
+6. Let Gradle sync and rebuild.
 
 ### OpenCV (Optional – for extending native C++)
 
 If OpenCV integration is added later:
 
-1. Download the OpenCV Android SDK from:  
-   https://opencv.org/releases/
-2. Extract the folder.
-
+1. Download the OpenCV Android SDK:  
+   https://opencv.org/releases/  
+2. Extract the folder.  
 3. In your `jni/CMakeLists.txt`, update:
 
-
+```
 set(OpenCV_DIR /path/to/OpenCV-android-sdk/sdk/native/jni)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
-
+```
 
 4. Link OpenCV:
 
+```
 target_link_libraries(
     flam_native
     ${OpenCV_LIBS}
     log
 )
+```
 
 ## Screenshots
 
@@ -138,4 +134,3 @@ target_link_libraries(
 
 ### Web Viewer
 ![Web Viewer Screenshot](web/public/web_screen.png)
-
