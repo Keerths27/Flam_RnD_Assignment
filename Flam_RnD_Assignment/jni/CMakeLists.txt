@@ -7,9 +7,17 @@ add_library(
     flam_native.cpp
 )
 
-# NOTE: You must point OpenCV_DIR to your OpenCV for Android SDK in Android Studio
-# find_package(OpenCV REQUIRED)
-# target_link_libraries(flam_native ${OpenCV_LIBS} log)
-
 find_library(log-lib log)
-target_link_libraries(flam_native ${log-lib})
+
+# NOTE: You must set OpenCV_DIR to point to your OpenCV for Android SDK
+# in your local CMake or via Android Studio's CMake configuration.
+# Example (in local.properties or environment):
+#   -DOpenCV_DIR=/path/to/OpenCV-android-sdk/sdk/native/jni
+
+find_package(OpenCV REQUIRED)
+
+target_link_libraries(
+    flam_native
+    ${OpenCV_LIBS}
+    ${log-lib}
+)
