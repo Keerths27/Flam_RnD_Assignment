@@ -27,7 +27,7 @@ class MainActivity : ComponentActivity() {
             if (!isGranted) {
                 Toast.makeText(this, "Camera permission is required", Toast.LENGTH_LONG).show()
             } else {
-                // Here you would start camera capture and feed frames to processFrame()
+                
             }
         }
 
@@ -39,6 +39,8 @@ class MainActivity : ComponentActivity() {
         glSurfaceView.setEGLContextClientVersion(2)
         edgeRenderer = EdgeRenderer(this)
         glSurfaceView.setRenderer(edgeRenderer)
+// TODO: Later I will connect the camera preview pipeline here
+// and send frames to processFrame() for native image processing.
 
         checkCameraPermission()
     }
