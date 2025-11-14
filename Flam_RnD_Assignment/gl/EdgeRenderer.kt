@@ -100,8 +100,9 @@ class EdgeRenderer(private val context: Context) : GLSurfaceView.Renderer {
             0, texBuffer
         )
 
-        // NOTE: For simplicity, no real texture is bound here.
-        // The fragment shader will just output black until you bind a texture with processed frame data.
+    // For now this just draws a fullscreen quad. Once the native processing
+    // is wired up, I plan to bind the processed frame as a texture here.
+
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4)
 
         GLES20.glDisableVertexAttribArray(positionHandle)
