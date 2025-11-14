@@ -1,0 +1,11 @@
+{
+  "name": "flam-rnd-web-viewer",
+  "version": "1.0.0",
+  "scripts": {
+    "build": "tsc",
+    "start": "npx http-server public -o"
+  },
+  "devDependencies": {
+    "typescript": "^5.6.3"
+  }
+}
