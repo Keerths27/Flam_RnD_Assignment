@@ -67,3 +67,12 @@ With more time, I would extend the project in the following ways:
 - Add WebSocket communication so the web viewer updates automatically.
 - Improve the UI/UX for both Android and Web for smoother visualization.
 - Optimize the native C++ code and move heavy operations off the UI thread.
+
+## Screenshots
+
+### Android App
+![Android Screenshot](web/public/android_screen.png)
+
+### Web Viewer
+![Web Viewer Screenshot](web/public/web_screen.png)
+
