@@ -13,13 +13,12 @@ It shows the end-to-end flow expected in the problem statement:
 > NOTE: The native C++ currently **just echoes the input bytes**. You can extend it with real OpenCV logic if you have the SDK set up.
 
 ## My Implementation Notes
+While working on this assignment, I focused on setting up the complete pipeline and structuring the project according to the requirements. The Android part is written in Kotlin and connected to native C++ through JNI. I added a simple native stub which is ready for OpenCV-based edge detection once the OpenCV SDK is linked.
 
-- Structured the project into Android, JNI, OpenGL, and Web modules as required in the assignment.
-- Used Kotlin for the Android app with a GLSurfaceView to prepare the rendering pipeline.
-- Added a JNI bridge with a native C++ stub (`flam_native.cpp`) that is ready for OpenCV-based edge detection.
-- Set up CMake and NDK integration so native code can be built and linked.
-- Implemented a basic OpenGL ES 2.0 renderer (`EdgeRenderer.kt`) that draws a fullscreen quad and can later bind processed textures.
-- Created a TypeScript-based web viewer that displays basic stats about the processed stream and shows where a processed frame preview would go.
+The OpenGL ES 2.0 renderer is kept minimal for now. It draws a fullscreen quad and can later display textures once the processed frames are connected to it.
+
+For the web part, I created a small TypeScript viewer to show placeholder stats and demonstrate how a processed frame preview would be displayed. I kept it simple so the focus remains on the native + Android pipeline.
+
 
 ## Structure
 
