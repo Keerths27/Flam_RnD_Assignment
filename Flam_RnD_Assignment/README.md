@@ -49,42 +49,30 @@ Then open the shown `http://localhost:...` URL. You will see:
 - A placeholder box for the processed frame
 - Stats like resolution, FPS, and processing text at the bottom
 
-Architecture Overview
-Android (Kotlin)
+## Architecture Overview
 
-Uses GLSurfaceView for rendering via OpenGL ES 2.0.
+### Android (Kotlin)
+- Uses GLSurfaceView for rendering via OpenGL ES 2.0.
+- Camera permission logic handled in MainActivity.kt.
+- Prepared to capture camera frames and send them to JNI for processing.
 
-Camera permission logic handled in MainActivity.kt.
+### JNI Layer (C++)
+- Kotlin calls the native function processFrame(...) in flam_native.cpp.
+- JNI converts the byte array from Java/Kotlin into raw C++ memory.
+- Current native stub echoes the frame back (placeholder).
+- Can easily be extended with OpenCV (Canny/Sobel/ORB).
 
-Prepared to capture camera frames and send them to JNI for processing.
+### OpenGL ES Renderer
+- EdgeRenderer.kt draws a fullscreen quad using OpenGL ES 2.0.
+- Renderer is ready for binding a texture once the native processed frame is available.
+- This forms the rendering pipeline for visualizing processed images.
 
-JNI Layer (C++)
+### Web Viewer (TypeScript)
+- Serves a simple UI to preview processed frames.
+- Displays a sample file (processed_frame.png) from the public directory.
+- Shows placeholder stats (resolution, FPS, processing info).
+- Can be extended with WebSockets to display live processed frames.
 
-Kotlin calls the native function processFrame(...) in flam_native.cpp.
-
-JNI converts the byte array from Java/Kotlin into raw C++ memory.
-
-Current native stub echoes the frame back (placeholder).
-
-Can easily be extended with OpenCV (Canny/Sobel/ORB).
-
-OpenGL ES Renderer
-
-EdgeRenderer.kt draws a fullscreen quad using OpenGL ES 2.0.
-
-Renderer is ready for binding a texture once the native processed frame is available.
-
-This forms the rendering pipeline for visualizing processed images.
-
-Web Viewer (TypeScript)
-
-Serves a simple UI to preview processed frames.
-
-Displays a sample file (processed_frame.png) from the public directory.
-
-Shows placeholder stats (resolution, FPS, processing info).
-
-Can be extended with WebSockets to display live processed frames.
 
 ## How to extend (for bonus points)
 
@@ -129,6 +117,7 @@ If OpenCV integration is added later:
 
 3. In your `jni/CMakeLists.txt`, update:
 
+
 set(OpenCV_DIR /path/to/OpenCV-android-sdk/sdk/native/jni)
 find_package(OpenCV REQUIRED)
 include_directories(${OpenCV_INCLUDE_DIRS})
@@ -137,9 +126,9 @@ include_directories(${OpenCV_INCLUDE_DIRS})
 4. Link OpenCV:
 
 target_link_libraries(
-flam_native
-${OpenCV_LIBS}
-log
+    flam_native
+    ${OpenCV_LIBS}
+    log
 )
 
 ## Screenshots
