@@ -49,6 +49,43 @@ Then open the shown `http://localhost:...` URL. You will see:
 - A placeholder box for the processed frame
 - Stats like resolution, FPS, and processing text at the bottom
 
+Architecture Overview
+Android (Kotlin)
+
+Uses GLSurfaceView for rendering via OpenGL ES 2.0.
+
+Camera permission logic handled in MainActivity.kt.
+
+Prepared to capture camera frames and send them to JNI for processing.
+
+JNI Layer (C++)
+
+Kotlin calls the native function processFrame(...) in flam_native.cpp.
+
+JNI converts the byte array from Java/Kotlin into raw C++ memory.
+
+Current native stub echoes the frame back (placeholder).
+
+Can easily be extended with OpenCV (Canny/Sobel/ORB).
+
+OpenGL ES Renderer
+
+EdgeRenderer.kt draws a fullscreen quad using OpenGL ES 2.0.
+
+Renderer is ready for binding a texture once the native processed frame is available.
+
+This forms the rendering pipeline for visualizing processed images.
+
+Web Viewer (TypeScript)
+
+Serves a simple UI to preview processed frames.
+
+Displays a sample file (processed_frame.png) from the public directory.
+
+Shows placeholder stats (resolution, FPS, processing info).
+
+Can be extended with WebSockets to display live processed frames.
+
 ## How to extend (for bonus points)
 
 - Replace the stub in `jni/flam_native.cpp` with real OpenCV code (Canny edges).
@@ -67,6 +104,43 @@ With more time, I would extend the project in the following ways:
 - Add WebSocket communication so the web viewer updates automatically.
 - Improve the UI/UX for both Android and Web for smoother visualization.
 - Optimize the native C++ code and move heavy operations off the UI thread.
+
+## Setup Instructions
+
+### Android (NDK + CMake)
+
+1. Open Android Studio.
+2. Go to **File → Settings → Appearance & Behavior → System Settings → Android SDK**.
+3. Open the **SDK Tools** tab.
+4. Install the following:
+   - **NDK (Side by Side)**
+   - **CMake**
+   - **LLDB** (optional but recommended)
+5. Click Apply → OK.
+6. Let Gradle sync and rebuild the project.
+
+### OpenCV (Optional – for extending native C++)
+
+If OpenCV integration is added later:
+
+1. Download the OpenCV Android SDK from:  
+   https://opencv.org/releases/
+2. Extract the folder.
+
+3. In your `jni/CMakeLists.txt`, update:
+
+set(OpenCV_DIR /path/to/OpenCV-android-sdk/sdk/native/jni)
+find_package(OpenCV REQUIRED)
+include_directories(${OpenCV_INCLUDE_DIRS})
+
+
+4. Link OpenCV:
+
+target_link_libraries(
+flam_native
+${OpenCV_LIBS}
+log
+)
 
 ## Screenshots
 
